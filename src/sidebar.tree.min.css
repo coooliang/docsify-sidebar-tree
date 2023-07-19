@@ -1,0 +1,31 @@
+.sidebar-nav li {
+  position: relative;
+  margin: 0;
+  cursor: pointer
+}
+
+.folder::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 11px;
+  left: -12px;
+  height: 6px;
+  width: 6px;
+  border-right: 1px solid #505d6b;
+  border-bottom: 1px solid #505d6b;
+  transform: rotate(-45deg);
+  transition: transform .1s
+}
+
+.sidebar-nav>ul>li ul {
+  display: none;
+}
+
+.open::before {
+  transform: rotate(45deg)
+}
+
+.collapse::before {
+  transform: rotate(-45deg)
+}
