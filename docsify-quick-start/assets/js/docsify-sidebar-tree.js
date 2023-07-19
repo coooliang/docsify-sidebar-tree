@@ -44,8 +44,6 @@
             console.log('docsify-sidebar-tree hook.doneEach');
         });
         hook.ready(function () {
-            // addFolderFileClass();
-
             console.log('docsify-sidebar-tree hook.ready');
         });
 
@@ -55,7 +53,11 @@
     }
 
     function folderClick(e) {
-        e.target.childNodes.forEach(function (ul) {
+        var target = e.target;
+        if(target.tagName === 'A'){
+            target = target.parentNode;
+        }
+        target.childNodes.forEach(function (ul) {
             if (ul.tagName === 'UL') {
                 if (ul.style.display === '' || ul.style.display === 'none') {
                     ul.style.display = 'block';
@@ -71,10 +73,10 @@
 
         //add cache
         var isRecord = false;
-        if ((sidebarTreeOpen && e.target.classList.contains('collapse')) || (sidebarTreeOpen == false && e.target.classList.contains('open'))) {
+        if ((sidebarTreeOpen && target.classList.contains('collapse')) || (sidebarTreeOpen == false && target.classList.contains('open'))) {
             isRecord = true;
         }
-        e.target.classList.forEach(cls => {
+        target.classList.forEach(cls => {
             if (cls.indexOf('folder-index-') != -1) {
                 if (isRecord && !clickFolderClassCache.includes(cls)) {
                     clickFolderClassCache.push(cls);
@@ -83,17 +85,11 @@
                 }
             }
         });
+        event.stopPropagation();
     }
 
     function getActiveNode() {
         var node = document.querySelector('.sidebar-nav .active');
-        if (!node) {
-            var curLink = document.querySelector(".sidebar-nav a[href=\"".concat(decodeURIComponent(location.hash).replace(/ /gi, '%20'), "\"]"));
-            node = findTagParent(curLink, 'LI', 2);
-            if (node) {
-                node.classList.add('active');
-            }
-        }
         return node;
     }
     function openActiveToRoot() {
@@ -108,6 +104,7 @@
 
     //main
     function addFolderFileClass() {
+        //add folder and file class
         document.querySelectorAll('.sidebar-nav li').forEach(function (li, index) {
             if (li.querySelector('ul')) {
                 li.classList.add('folder');
@@ -117,7 +114,8 @@
             }
         });
 
-        document.querySelectorAll(".sidebar-nav>ul>li").forEach(function (li, index) {
+        //add index class
+        document.querySelectorAll(".folder").forEach(function (li, index) {
             li.classList.add('folder-index-'.concat(index));
             if (window.$docsify && window.$docsify.sidebarTree && window.$docsify.sidebarTree.open) {
                 sidebarTreeOpen = true;
@@ -130,8 +128,10 @@
             var _cls = '.'.concat(cls);
             if (sidebarTreeOpen) {
                 document.querySelector(_cls).querySelector("ul").style.display = 'none';
+                document.querySelector(_cls).querySelector("ul").style.display = 'collapse';
             } else {
                 document.querySelector(_cls).querySelector("ul").style.display = 'block';
+                document.querySelector(_cls).querySelector("ul").style.display = 'open';
             }
         });
     }

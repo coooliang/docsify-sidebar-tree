@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>docsify-quick-start</title>
@@ -10,12 +11,20 @@
   <link rel="stylesheet" href="assets/themes/vue.css">
 
 </head>
+
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: '',
-      repo: ''
+      repo: '',
+      loadSidebar: true,
+      sidebarTree: {
+        open: true,//def false
+      },
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md', // See #301
+      },
     }
   </script>
   <!-- Docsify v4 -->
@@ -25,5 +34,7 @@
   <script src="assets/js/docsify-copy-code.js"></script>
   <script src="assets/js/countable.js"></script>
   <script src="assets/js/scroll-to-top.js"></script>
+  <script src="assets/js/docsify-sidebar-tree.js"></script>
 </body>
+
 </html>
